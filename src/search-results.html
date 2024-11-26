@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm kiếm chuyến bay - AirBook</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/search-results.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/header.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <nav>
+            <div class="logo">
+                <img src="images/logo.png" alt="AirBook Logo" class="logo-img">
+                <a href="index.html"><span class="logo-text">AIRBOOK</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Trang chủ</a></li>
+                <li><a href="search-results.html">Chuyến bay</a></li>
+                <li><a href="#">Đặt chỗ</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+
+            <!-- Auth Buttons -->
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn-login" onclick="window.location.href='login.html'">Đăng nhập</button>
+                <button class="btn-signup" onclick="window.location.href='signup.html'">Đăng ký</button>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="profile-trigger" onclick="toggleDropdown()">
+                    <div class="avatar-wrapper">
+                        <img id="userAvatar" src="images/user.png" alt="User Avatar">
+                    </div>
+                    <div class="user-info">
+                        <span id="userName"></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <a href="profile.html" class="dropdown-item">
+                        <i class="fas fa-user"></i> Thông tin cá nhân
+                    </a>
+                    <a href="booking-history.html" class="dropdown-item">
+                        <i class="fas fa-history"></i> Lịch sử đặt vé
+                    </a>
+                    <a href="change-password.html" class="dropdown-item">
+                        <i class="fas fa-key"></i> Đổi mật khẩu
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Nội dung trang -->
+    <div class="container">
+        <!-- Left Search Form -->
+        <div class="filter-container">
+            <h3>Bộ lọc tìm kiếm</h3>
+
+            <!-- Lọc theo sân bay -->
+            <div class="filter-group">
+                <label>Điểm đi</label>
+                <select id="originSelect">
+                    <option value="">Tất cả điểm đi</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Điểm đến</label>
+                <select id="destinationSelect">
+                    <option value="">Tất cả điểm đến</option>
+                </select>
+            </div>
+
+            <!-- Lọc theo ngày -->
+            <div class="filter-group">
+                <label>Ngày bay</label>
+                <input type="date" id="departureDate">
+            </div>
+
+            <!-- Lọc theo giá -->
+            <div class="filter-group">
+                <label>Giá vé tối đa</label>
+                <input type="range" id="priceRange">
+                <div class="price-labels">
+                    <span id="minPrice"></span>
+                    <span id="maxPrice"></span>
+                </div>
+            </div>
+
+            <!-- Lọc theo thời gian bay -->
+            <div class="filter-group">
+                <label>Thời gian bay</label>
+                <div class="time-filters">
+                    <label>
+                        <input type="checkbox" value="morning">
+                        Sáng (6h - 12h)
+                    </label>
+                    <label>
+                        <input type="checkbox" value="afternoon">
+                        Chiều (12h - 18h)
+                    </label>
+                    <label>
+                        <input type="checkbox" value="evening">
+                        Tối (18h - 6h)
+                    </label>
+                </div>
+            </div>
+
+            <!-- Lọc theo hãng bay -->
+            <div class="filter-group">
+                <label>Hãng bay</label>
+                <div class="airline-filters">
+                    <label class="airline-option">
+                        <input type="checkbox" value="VN" name="airline">
+                        <span>Vietnam Airlines</span>
+                    </label>
+
+                    <label class="airline-option">
+                        <input type="checkbox" value="VJ" name="airline">
+                        <span>Vietjet Air</span>
+                    </label>
+
+                    <label class="airline-option">
+                        <input type="checkbox" value="BL" name="airline">
+                        <span>Pacific Airlines</span>
+                    </label>
+
+                    <label class="airline-option">
+                        <input type="checkbox" value="QH" name="airline">
+                        <span>Bamboo Airways</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Thêm vào trong .filter-container, sau filter-group khác -->
+            <div class="filter-group">
+                <label>Số lượng hành khách</label>
+                <div class="passenger-selector">
+                    <div class="passenger-type">
+                        <span>Người lớn</span>
+                        <div class="quantity-control">
+                            <button type="button" class="qty-btn minus" data-type="adult">-</button>
+                            <input type="number" id="adultCount" value="1" min="1" max="9" readonly>
+                            <button type="button" class="qty-btn plus" data-type="adult">+</button>
+                        </div>
+                    </div>
+                    <div class="passenger-type">
+                        <span>Trẻ em (2-12 tuổi)</span>
+                        <div class="quantity-control">
+                            <button type="button" class="qty-btn minus" data-type="child">-</button>
+                            <input type="number" id="childCount" value="0" min="0" max="9" readonly>
+                            <button type="button" class="qty-btn plus" data-type="child">+</button>
+                        </div>
+                    </div>
+                    <div class="passenger-type">
+                        <span>Em bé (< 2 tuổi)</span>
+                                <div class="quantity-control">
+                                    <button type="button" class="qty-btn minus" data-type="infant">-</button>
+                                    <input type="number" id="infantCount" value="0" min="0" max="4" readonly>
+                                    <button type="button" class="qty-btn plus" data-type="infant">+</button>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Content -->
+        <div class="results-container">
+            <div id="flightResults">
+                <!-- Kết quả chuyến bay sẽ được điền vào đây -->
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="js/flightAPI.js"></script>
+    <script type="text/javascript" src="js/searchResults.js"></script>
+    <script type="text/javascript" src="js/api/airportApi.js"></script>
+    <script type="text/javascript" src="js/api/auth.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý chuyến bay - AirBook</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/flight-management.css">
+    <link rel="stylesheet" type="text/css" href="css/admin-header.css">
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="AirBook Logo">
+                <span>AIRBOOK ADMIN</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i> Tổng quan
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="flight-management.html">
+                            <i class="fas fa-plane"></i> Quản lý chuyến bay
+                        </a>
+                    </li>
+                    <li>
+                        <a href="booking-management.html">
+                            <i class="fas fa-ticket-alt"></i> Đặt vé
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user-management.html">
+                            <i class="fas fa-users"></i> Quản lý người dùng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html">
+                            <i class="fas fa-chart-bar"></i> Báo cáo
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i> Cài đặt
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="admin-header">
+                <div class="admin-profile">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="admin-info">
+                        <img src="images/admin.png" alt="Admin Avatar">
+                        <div class="admin-details">
+                            <span class="admin-name">Admin Name</span>
+                            <span class="admin-role">Administrator</span>
+                        </div>
+                        <div class="dropdown">
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="dropdown-menu">
+                                <a href="profile.html"><i class="fas fa-user"></i> Hồ sơ</a>
+                                <a href="settings.html"><i class="fas fa-cog"></i> Cài đặt</a>
+                                <div class="divider"></div>
+                                <a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Flight Management Content -->
+            <div class="dashboard-content">
+                <!-- Header -->
+                <div class="content-header">
+                    <h1>Quản lý chuyến bay</h1>
+                    <button class="btn-primary" onclick="openAddFlightModal()">
+                        <i class="fas fa-plus"></i> Thêm chuyến bay mới
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-section">
+                    <select class="filter-dropdown" name="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="SCHEDULED">Đã lên lịch</option>
+                        <option value="DELAYED">Bị hoãn</option>
+                        <option value="CANCELLED">Đã hủy</option>
+                        <option value="COMPLETED">Đã hoàn thành</option>
+                    </select>
+                    <button class="btn-secondary" onclick="resetFilters()">
+                        <i class="fas fa-sync-alt"></i> Đặt lại
+                    </button>
+                </div>
+
+                <!-- Flights Table -->
+                <div class="flights-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã chuyến bay</th>
+                                <th>Máy bay</th>
+                                <th>Điểm khởi hành</th>
+                                <th>Điểm đến</th>
+                                <th>Thời gian khởi hành</th>
+                                <th>Thời gian đến</th>
+                                <th>Giá vé</th>
+                                <th>Ghế trống</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-page active">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <span>...</span>
+                    <button class="btn-page">10</button>
+                    <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Thêm/Sửa Chuyến bay -->
+    <div id="flightModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Thêm chuyến bay mới</h2>
+                <button class="close-modal" onclick="closeFlightModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="flightForm" onsubmit="handleFlightSubmit(event)">
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="flight_code">Mã chuyến bay <span class="required">*</span></label>
+                        <input type="text" id="flight_code" name="flight_code" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aircraft_id">Máy bay <span class="required">*</span></label>
+                        <select id="aircraft_id" name="aircraft_id" required>
+                            <!-- Options sẽ được thêm bằng JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departure_airport_id">Sân bay khởi hành <span class="required">*</span></label>
+                        <select id="departure_airport_id" name="departure_airport_id" required>
+                            <!-- Options sẽ được thêm bằng JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrival_airport_id">Sân bay đến <span class="required">*</span></label>
+                        <select id="arrival_airport_id" name="arrival_airport_id" required>
+                            <!-- Options sẽ được thêm bằng JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departure_datetime">Thời gian khởi hành <span class="required">*</span></label>
+                        <input type="datetime-local" id="departure_datetime" name="departure_datetime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrival_datetime">Thời gian đến <span class="required">*</span></label>
+                        <input type="datetime-local" id="arrival_datetime" name="arrival_datetime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="base_fare">Giá vé <span class="required">*</span></label>
+                        <input type="number" id="base_fare" name="base_fare" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="available_seats">Số ghế trống <span class="required">*</span></label>
+                        <input type="number" id="available_seats" name="available_seats" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Trạng thái <span class="required">*</span></label>
+                        <select id="status" name="status" required>
+                            <option value="SCHEDULED">Đã lên lịch</option>
+                            <option value="DELAYED">Bị hoãn</option>
+                            <option value="CANCELLED">Đã hủy</option>
+                            <option value="COMPLETED">Đã hoàn thành</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeFlightModal()">Hủy</button>
+                    <button type="submit" class="btn-primary">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Xác nhận xóa -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Xác nhận xóa</h2>
+                <button class="close-modal" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa chuyến bay này?</p>
+                <div class="form-actions">
+                    <button class="btn-secondary" onclick="closeDeleteModal()">Hủy</button>
+                    <button class="btn-danger" onclick="confirmDelete()">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script src="js/flight-management.js"></script>
+</body>
+
+</html>

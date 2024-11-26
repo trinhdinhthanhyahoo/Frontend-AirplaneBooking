@@ -1,0 +1,63 @@
+/* Admin Header */
+.admin-header {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    right: 0;
+    height: 60px;
+    z-index: 1000;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Admin Profile */
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Notifications */
+.notifications {
+    position: relative;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.notifications i {
+    color: #64748b;
+    font-size: 1.2rem;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    height: 16px;
+    min-width: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+/* Admin Info */
+.admin-info {
+    display: flex;
+    align-items: center;
+}
+
+.admin-info img {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+} 

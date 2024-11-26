@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AirBook</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-header.css">
+</head>
+
+<body>
+    <div class="admin-container">
+
+        <!-- Top Header cho cả admin-dashboard.html và user-management.html -->
+
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="AirBook Logo">
+                <span>AIRBOOK ADMIN</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="admin-dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i> Tổng quan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="flight-management.html">
+                            <i class="fas fa-plane"></i> Quản lý chuyến bay
+                        </a>
+                    </li>
+                    <li>
+                        <a href="booking-management.html">
+                            <i class="fas fa-ticket-alt"></i> Đặt vé
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user-management.html">
+                            <i class="fas fa-users"></i> Quản lý người dùng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html">
+                            <i class="fas fa-chart-bar"></i> Báo cáo
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i> Cài đặt
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="admin-header">
+                <div class="admin-profile">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="admin-info">
+                        <img src="images/admin.png" alt="Admin Avatar" id="adminAvatar">
+                        <div class="admin-details">
+                            <span class="admin-name" id="adminName">Loading...</span>
+                            <span class="admin-role" id="adminRole">Loading...</span>
+                        </div>
+                        <div class="dropdown">
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="dropdown-menu">
+                                <a href="profile.html"><i class="fas fa-user"></i> Hồ sơ</a>
+                                <a href="settings.html"><i class="fas fa-cog"></i> Cài đặt</a>
+                                <div class="divider"></div>
+                                <a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-plus"></i>
+                        Thêm chuyến bay
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-user-plus"></i>
+                        Thêm người dùng
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-ticket-alt"></i>
+                        Đặt vé mới
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #4CAF50;">
+                            <i class="fas fa-plane-departure"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Chuyến bay hôm nay</h3>
+                            <p class="stat-number">150</p>
+                            <span class="stat-change positive">+12% <i class="fas fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #2196F3;">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Đặt vé mới</h3>
+                            <p class="stat-number">85</p>
+                            <span class="stat-change positive">+5% <i class="fas fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #FF9800;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Người dùng mới</h3>
+                            <p class="stat-number">24</p>
+                            <span class="stat-change negative">-3% <i class="fas fa-arrow-down"></i></span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #E91E63;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Doanh thu</h3>
+                            <p class="stat-number">$12,850</p>
+                            <span class="stat-change positive">+8% <i class="fas fa-arrow-up"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>Thống kê doanh thu</h3>
+                        <div class="chart" id="revenueChart">
+                            <!-- Chart will be rendered here -->
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Số lượng đặt vé</h3>
+                        <div class="chart" id="bookingsChart">
+                            <!-- Chart will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="recent-activities">
+                    <div class="section-header">
+                        <h2>Hoạt động gần đây</h2>
+                        <div class="section-actions">
+                            <select class="activity-filter">
+                                <option value="all">Tất cả hoạt động</option>
+                                <option value="bookings">Đặt vé</option>
+                                <option value="users">Người dùng</option>
+                                <option value="flights">Chuyến bay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="activity-list">
+                        <!-- Activity items will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/dashboard-charts.js"></script>
+</body>
+
+</html>

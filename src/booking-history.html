@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử đặt vé - AirBook</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/booking-history.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <nav>
+            <div class="logo">
+                <img src="images/logo.png" alt="AirBook Logo" class="logo-img">
+                <a href="index.html"><span class="logo-text">AIRBOOK</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Trang chủ</a></li>
+                <li><a href="search-results.html">Chuyến bay</a></li>
+                <li><a href="#">Đặt chỗ</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+
+            <!-- Auth Buttons -->
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn-login" onclick="window.location.href='login.html'">Đăng nhập</button>
+                <button class="btn-signup" onclick="window.location.href='signup.html'">Đăng ký</button>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="profile-trigger" onclick="toggleDropdown()">
+                    <div class="avatar-wrapper">
+                        <img id="userAvatar" src="images/user.png" alt="User Avatar">
+                    </div>
+                    <div class="user-info">
+                        <span id="userName"></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <a href="profile.html" class="dropdown-item">
+                        <i class="fas fa-user"></i> Thông tin cá nhân
+                    </a>
+                    <a href="booking-history.html" class="dropdown-item">
+                        <i class="fas fa-history"></i> Lịch sử đặt vé
+                    </a>
+                    <a href="change-password.html" class="dropdown-item">
+                        <i class="fas fa-key"></i> Đổi mật khẩu
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="booking-history-page">
+        <h1 class="page-title">Lịch sử đặt vé</h1>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="search-wrapper">
+                <input type="text" id="searchBooking" placeholder="Tìm kiếm theo mã đặt vé, số ghế..."
+                    autocomplete="off">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="statusFilter">Trạng thái</label>
+                    <select id="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="CONFIRMED">Đã xác nhận</option>
+                        <option value="PENDING">Chờ thanh toán</option>
+                        <option value="CANCELLED">Đã hủy</option>
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="dateFilter">Ngày đặt</label>
+                    <input type="date" id="dateFilter">
+                </div>
+
+                <button id="resetFilters" class="btn-reset" title="Đặt lại bộ lọc">
+                    <i class="fas fa-undo"></i>
+                    <span>Đặt lại</span>
+                </button>
+            </div>
+
+            <div class="filter-results">
+                <span id="resultCount"></span>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state" style="display: none;">
+            <div class="spinner"></div>
+            <p>Đang tải dữ liệu...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <i class="fas fa-exclamation-circle"></i>
+            <p id="errorMessage">Đã có lỗi xảy ra</p>
+            <button onclick="bookingHistory.loadBookingHistory()">Thử lại</button>
+        </div>
+
+        <!-- Booking List -->
+        <div id="bookingsList" class="booking-list">
+            <!-- Booking cards will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-ticket-alt"></i>
+            <p>Bạn chưa có đặt vé nào</p>
+            <a href="index.html" class="btn-book-now">Đặt vé ngay</a>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination">
+            <!-- Pagination will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script src="js/booking-history.js"></script>
+    <script src="js/api/auth.js"></script>
+</body>
+
+</html>

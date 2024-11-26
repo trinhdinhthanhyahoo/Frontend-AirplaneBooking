@@ -1,0 +1,19 @@
+/* Header khi scroll */
+header.scrolled {
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Navigation Links khi scroll */
+header.scrolled .nav-links a {
+    color: #333;
+}
+
+/* Logo text khi scroll */
+header.scrolled .logo span {
+    background: linear-gradient(45deg, #000000, #ff0000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+} 

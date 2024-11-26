@@ -1,0 +1,40 @@
+.auth-buttons {
+    display: flex;
+    gap: 0.8rem;
+    height: 100%;
+    align-items: center;
+}
+
+.btn-login, .btn-signup {
+    padding: 0.3rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-login {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #fff;
+}
+
+.btn-signup {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #fff;
+}
+
+.btn-login:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-signup:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+} 

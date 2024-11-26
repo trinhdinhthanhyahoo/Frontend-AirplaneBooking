@@ -1,0 +1,640 @@
+/* Thêm background cho html và body */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Điều chỉnh header để trong suốt */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Điều chỉnh container */
+.container {
+    margin-top: 80px;
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Điều chỉnh màu chữ cho phù hợp với nền tối */
+.filter-container h3,
+.result-count,
+.flight-time h3,
+.airport-code,
+.flight-code {
+    color: #333;
+}
+
+.filter-group label,
+.flight-time p,
+.airport-name,
+.duration {
+    color: #555;
+}
+
+/* Filter Container Styles */
+.filter-container {
+    flex: 0 0 300px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container h3 {
+    margin: 0 0 1.5rem;
+    color: #333;
+    font-size: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.filter-group select,
+.filter-group input[type="date"],
+.filter-group input[type="range"] {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+/* Price Range Slider */
+.filter-group input[type="range"] {
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.price-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Time Filters */
+.time-filters label {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    font-weight: normal;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.time-filters input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Airline Filters */
+.airline-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.airline-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #333;
+}
+
+.airline-option:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.airline-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Results Container Styles */
+.results-container {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Flight Card Styles - Cập nhật */
+.flight-card {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.flight-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.flight-info {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex: 1;
+}
+
+.flight-time {
+    text-align: center;
+    min-width: 140px;
+}
+
+.flight-time h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.flight-time p {
+    margin: 6px 0;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+}
+
+.airport-code {
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.airport-name {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-top: 6px;
+}
+
+.flight-route {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 30px;
+    min-width: 220px;
+}
+
+.airline-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.airline-logo {
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+}
+
+.flight-code {
+    font-size: 1.1rem;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.duration {
+    margin-top: 12px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.route-line {
+    width: 180px;
+    height: 2px;
+    background: #e0e0e0;
+    margin: 10px 0;
+    position: relative;
+}
+
+.route-line i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #3498db;
+    font-size: 1.2rem;
+}
+
+.flight-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 12px;
+    min-width: 160px;
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e74c3c;
+}
+
+.select-flight-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+    min-width: 80px;
+    position: relative;
+}
+
+.select-flight-btn:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.select-flight-btn:active {
+    transform: translateY(1px);
+}
+
+.select-flight-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.select-flight-btn .fa-spinner {
+    margin-right: 5px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.no-results i {
+    font-size: 48px;
+    color: #ccc;
+    margin-bottom: 16px;
+}
+
+/* Results Header Styles - Cập nhật */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.result-count {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.sort-options select {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sort-options select:hover {
+    border-color: #bdc3c7;
+}
+
+/* Error and No Results States */
+.error-message,
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    color: #f44336;
+}
+
+.error-message i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .flight-main-info {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .time-info {
+        width: 100%;
+    }
+
+    .price-info {
+        width: 100%;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid #f0f0f0;
+    }
+}
+
+@media (max-width: 480px) {
+    .time-info {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .duration {
+        padding: 16px 0;
+    }
+
+    .flight-line {
+        transform: rotate(90deg);
+    }
+}
+
+/* Custom Scrollbar */
+.airline-filters::-webkit-scrollbar {
+    width: 6px;
+}
+
+.airline-filters::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.airline-filters::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.airline-filters::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.flight-card {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.filter-section select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    background-color: white;
+    margin-bottom: 15px;
+}
+
+.filter-section select option {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.filter-section select option:disabled {
+    color: #999;
+    font-style: italic;
+}
+
+.filter-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.filter-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Animation cho flight cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.flight-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Passenger Selector Styles */
+.passenger-selector {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.passenger-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 3px 0;
+}
+
+.passenger-type:last-child {
+    margin-bottom: 0;
+}
+
+.passenger-type span {
+    font-size: 0.85rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.qty-btn:hover {
+    background: #f0f0f0;
+}
+
+.qty-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.quantity-control input {
+    width: 30px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Điều chỉnh màu chữ và hover effect cho nav links */
+.nav-links a {
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.nav-links a.active {
+    color: #e74c3c;
+}
+
+/* Điều chỉnh logo */
+.logo-text {
+    color: white;
+}
+
+/* Điều chỉnh auth buttons */
+.auth-buttons .btn-login,
+.auth-buttons .btn-signup {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.auth-buttons .btn-login:hover,
+.auth-buttons .btn-signup:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Điều chỉnh user profile dropdown */
+.user-profile .profile-trigger {
+    color: white;
+}
+
+.dropdown-menu {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+} 

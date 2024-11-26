@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin cá nhân - Airplane Booking</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header giống index.html -->
+    <header class="header">
+        <nav>
+            <div class="logo">
+                <img src="images/logo.png" alt="AirBook Logo" class="logo-img">
+                <a href="index.html"><span class="logo-text">AIRBOOK</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="search-results.html">Chuyến bay</a></li>
+                <li><a href="#">Đặt chỗ</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+
+            <!-- User Profile -->
+            <div class="user-profile" id="userProfile">
+                <div class="profile-trigger" onclick="toggleDropdown()">
+                    <div class="avatar-wrapper">
+                        <img id="userAvatar" src="images/user.png" alt="User Avatar">
+                    </div>
+                    <div class="user-info">
+                        <span id="userName"></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <a href="profile.html" class="dropdown-item active">
+                        <i class="fas fa-user"></i> Thông tin cá nhân
+                    </a>
+                    <a href="change-password.html" class="dropdown-item">
+                        <i class="fas fa-key"></i> Đổi mật khẩu
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Thông tin cá nhân</h1>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-avatar">
+                    <div class="avatar-preview">
+                        <img id="avatarImage" src="images/user.png" alt="Avatar">
+                    </div>
+                    <div class="avatar-upload">
+                        <label for="avatarInput" class="btn-upload">
+                            <i class="fas fa-camera"></i> Thay đổi ảnh
+                        </label>
+                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <form id="profileForm" class="profile-form">
+                    <div class="form-group">
+                        <label for="username">Tên người dùng</label>
+                        <input type="text" id="username" name="username" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-save"></i> Lưu thay đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 AirBook. Đã đăng ký bản quyền.</p>
+        </div>
+    </footer>
+
+    <script src="js/profile.js"></script>
+    <script>
+        // Kiểm tra đăng nhập và điều hướng
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            loadUserProfile();
+        });
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Xử lý upload avatar
+        document.getElementById('avatarInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('avatarImage').src = e.target.result;
+                    document.getElementById('userAvatar').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                // TODO: Implement avatar upload to server
+            }
+        });
+
+        async function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) return;
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/users/${user.userId}`, {
+                    headers: {
+                        'Accept': '*/*',
+                        'Authorization': `Bearer ${user.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+
+                const userData = await response.json();
+
+                // Populate form fields with available data
+                document.getElementById('username').value = userData.username || '';
+                document.getElementById('email').value = userData.email || '';
+                document.getElementById('phone').value = userData.phone || '';
+
+                // Update header username
+                document.getElementById('userName').textContent = userData.username;
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                alert('Không thể tải thông tin người dùng!');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const response = await fetch(`http://localhost:8080/api/users/${user.userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Cập nhật thông tin thành công!');
+                    await loadUserProfile(); // Reload user data
+                } else {
+                    throw new Error('Failed to update profile');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Có lỗi xảy ra khi cập nhật thông tin!');
+            }
+        });
+    </script>
+</body>
+
+</html>

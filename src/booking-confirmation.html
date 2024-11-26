@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận đặt vé | AirBook</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/booking.css">
+    <link rel="stylesheet" href="css/booking-confirmation.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Loading indicator -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+    </div>
+
+    <!-- Error message -->
+    <div id="error-message" class="alert alert-danger"></div>
+
+    <header>
+        <header class="header">
+            <nav>
+                <div class="logo">
+                    <img src="images/logo.png" alt="AirBook Logo" class="logo-img">
+                    <a href="index.html"><span class="logo-text">AIRBOOK</span></a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Trang chủ</a></li>
+                    <li><a href="search-results.html">Chuyến bay</a></li>
+                    <li><a href="#">Đặt chỗ</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+
+                <!-- Auth Buttons -->
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn-login" onclick="window.location.href='login.html'">Đăng nhập</button>
+                    <button class="btn-signup" onclick="window.location.href='signup.html'">Đăng ký</button>
+                </div>
+
+                <!-- User Profile -->
+                <div class="user-profile" id="userProfile" style="display: none;">
+                    <div class="profile-trigger" onclick="toggleDropdown()">
+                        <div class="avatar-wrapper">
+                            <img id="userAvatar" src="images/user.png" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <span id="userName"></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> Thông tin cá nhân
+                        </a>
+                        <a href="change-password.html" class="dropdown-item">
+                            <i class="fas fa-key"></i> Đổi mật khẩu
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </header>
+
+    <main class="booking-container">
+        <div class="confirmation-content">
+            <!-- Thông báo trạng thái -->
+            <div class="status-message">
+                <i class="fas fa-check-circle"></i>
+                <h2>Đặt vé thành công!</h2>
+                <p>Mã đặt chỗ của bạn: <strong id="bookingReference"></strong></p>
+            </div>
+
+            <!-- Thông tin chuyến bay -->
+            <div class="flight-summary">
+                <h3>Thông tin chuyến bay</h3>
+                <div id="flightDetails"></div>
+            </div>
+
+            <!-- Thông tin hành khách -->
+            <div class="passenger-summary">
+                <h3>Thông tin hành khách</h3>
+                <div id="passengerList"></div>
+            </div>
+
+            <!-- Thông tin thanh toán -->
+            <div class="payment-summary">
+                <h3>Thông tin thanh toán</h3>
+                <div id="paymentDetails">
+                    <div class="price-breakdown"></div>
+                    <div class="payment-instructions"></div>
+                </div>
+            </div>
+
+            <!-- Thời gian còn lại để thanh toán -->
+            <div class="payment-timer">
+                <p>Thời gian còn lại để thanh toán:</p>
+                <div id="countdown"></div>
+            </div>
+
+            <!-- Nút tải vé và hướng dẫn -->
+            <div class="action-buttons">
+                <!-- Removed onclick attributes to use event listeners in JS -->
+                <button class="btn-download">
+                    <i class="fas fa-download"></i> Tải vé điện tử
+                </button>
+                <button class="btn-email">
+                    <i class="fas fa-envelope"></i> Gửi email xác nhận
+                </button>
+            </div>
+
+            <!-- Lưu ý quan trọng -->
+            <div class="important-notes">
+                <h4><i class="fas fa-exclamation-circle"></i> Lưu ý quan trọng</h4>
+                <ul>
+                    <li>Vui lòng thanh toán trong thời gian quy định để đảm bảo giá vé</li>
+                    <li>Mang theo giấy tờ tùy thân khi làm thủ tục</li>
+                    <li>Có mặt tại sân bay trước giờ khởi hành 2 tiếng với chuyến bay quốc tế, 1.5 tiếng với chuyến bay
+                        nội địa</li>
+                </ul>
+            </div>
+
+            <!-- Hỗ trợ -->
+            <div class="support-info">
+                <p>Cần hỗ trợ? Liên hệ với chúng tôi:</p>
+                <div class="contact-methods">
+                    <a href="tel:1900xxxx"><i class="fas fa-phone"></i> 1900 xxxx</a>
+                    <a href="mailto:support@airbook.com"><i class="fas fa-envelope"></i> support@airbook.com</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer"></footer>
+    <script src="js/main.js"></script>
+    <script src="js/airportSelect.js"></script>
+    <script src="js/flightAPI.js"></script>
+    <script src="js/flightSearch.js"></script>
+
+
+    <script src="js/booking-confirmation.js"></script>
+    <script src="js/api/auth.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airplane Booking</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <header class="header">
+            <nav>
+                <div class="logo">
+                    <img src="images/logo.png" alt="AirBook Logo" class="logo-img">
+                    <a href="index.html"><span class="logo-text">AIRBOOK</span></a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Trang chủ</a></li>
+                    <li><a href="search-results.html">Chuyến bay</a></li>
+                    <li><a href="#">Đặt chỗ</a></li>
+                    <li><a href="contact.html">Liên hệ</a></li>
+                </ul>
+
+                <!-- Auth Buttons -->
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn-login" onclick="window.location.href='login.html'">Đăng nhập</button>
+                    <button class="btn-signup" onclick="window.location.href='signup.html'">Đăng ký</button>
+                </div>
+
+                <!-- User Profile -->
+                <div class="user-profile" id="userProfile" style="display: none;">
+                    <div class="profile-trigger" onclick="toggleDropdown()">
+                        <div class="avatar-wrapper">
+                            <img id="userAvatar" src="images/user.png" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <span id="userName"></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> Thông tin cá nhân
+                        </a>
+                        <a href="booking-history.html" class="dropdown-item">
+                            <i class="fas fa-history"></i> Lịch sử đặt vé
+                        </a>
+                        <a href="change-password.html" class="dropdown-item">
+                            <i class="fas fa-key"></i> Đổi mật khẩu
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </header>
+
+    <div class="main-container">
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="hero-content">
+                <h1>Tìm và Đặt Chuyến Bay Của Bạn</h1>
+                <p>Khám phá các ưu đãi tuyệt vời cho chuyến bay toàn cầu</p>
+            </div>
+            <div class="search-box">
+                <form id="flight-search-form">
+                    <div class="trip-type">
+                        <label class="radio-container">
+                            <input type="radio" name="tripType" value="oneWay" checked>
+                            <span class="radio-label">Một chiều</span>
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="tripType" value="roundTrip">
+                            <span class="radio-label">Khứ hồi</span>
+                        </label>
+                    </div>
+                    <div class="search-row">
+                        <div class="search-group">
+                            <label>Điểm đi</label>
+                            <select id="origin" class="airport-select" required></select>
+                        </div>
+
+                        <div class="search-group">
+                            <label>Điểm đến</label>
+                            <select id="destination" class="airport-select" required></select>
+                        </div>
+
+                        <div class="search-group">
+                            <label>Ngày đi</label>
+                            <input type="date" id="departureDate" class="date-input" required>
+                        </div>
+
+                        <div id="returnDateGroup" class="search-group" style="display: none;">
+                            <label>Ngày về</label>
+                            <input type="date" id="returnDate" class="date-input">
+                        </div>
+
+                        <div class="search-group">
+                            <label for="passengers">Hành khách</label>
+                            <div class="passenger-dropdown">
+                                <button type="button" class="passenger-trigger" id="passengerTrigger">
+                                    <span id="totalPassengers">1 Passenger</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="passenger-menu" id="passengerMenu">
+                                    <div class="passenger-type">
+                                        <div class="passenger-info">
+                                            <span class="passenger-label">Người lớn</span>
+                                            <span class="passenger-age">≥12 tuổi</span>
+                                        </div>
+                                        <div class="passenger-count">
+                                            <button type="button" class="count-btn minus" data-type="adult">−</button>
+                                            <span class="count" id="adultCount">1</span>
+                                            <button type="button" class="count-btn plus" data-type="adult">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="passenger-type">
+                                        <div class="passenger-info">
+                                            <span class="passenger-label">Trẻ em</span>
+                                            <span class="passenger-age">2-12 tuổi</span>
+                                        </div>
+                                        <div class="passenger-count">
+                                            <button type="button" class="count-btn minus" data-type="child">−</button>
+                                            <span class="count" id="childCount">0</span>
+                                            <button type="button" class="count-btn plus" data-type="child">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="passenger-type">
+                                        <div class="passenger-info">
+                                            <span class="passenger-label">Em bé</span>
+                                            <span class="passenger-age">&lt;2 tuổi</span>
+                                        </div>
+                                        <div class="passenger-count">
+                                            <button type="button" class="count-btn minus" data-type="infant">−</button>
+                                            <span class="count" id="infantCount">0</span>
+                                            <button type="button" class="count-btn plus" data-type="infant">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="passenger-footer">
+                                        <button type="button" class="btn-done" id="donePassengers">Xong</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="passengers" id="passengers" value="1">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                        Tìm Chuyến Bay
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Flights Section -->
+        <section class="flights-section">
+            <div class="flights-list">
+                <div class="flights-header">
+                    <h2>Các Chuyến Bay Hiện Có</h2>
+                </div>
+                <div id="departure-flights">
+                    <!-- Flights will be displayed here -->
+                </div>
+                <div class="pagination">
+                    <!-- Pagination will be added here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 AirBook. Đã đăng ký bản quyền.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/airportSelect.js"></script>
+    <script src="js/flightAPI.js"></script>
+    <script src="js/flightSearch.js"></script>
+
+    <script>
+        async function checkLoginStatus() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const authButtons = document.getElementById('authButtons');
+            const userProfile = document.getElementById('userProfile');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+
+            if (user) {
+                try {
+                    // Lấy thông tin user mới nhất từ server
+                    const response = await fetch(`http://localhost:8080/api/users/${user.userId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch user data');
+                    }
+
+                    const userData = await response.json();
+
+                    // Cập nhật localStorage với dữ liệu mới
+                    localStorage.setItem('user', JSON.stringify({
+                        ...user,
+                        ...userData
+                    }));
+
+                    // Kiểm tra các phần tử tồn tại trước khi cập nhật nội dung
+                    if (userName) userName.textContent = userData.username || '';
+                    if (userEmail) userEmail.textContent = userData.email || '';
+
+                    // Hiển thị avatar nếu có
+                    const userAvatar = document.getElementById('userAvatar');
+                    if (userAvatar && userData.avatar) {
+                        userAvatar.src = userData.avatar;
+                    }
+
+                    // Hiển thị profile và ẩn nút auth
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (userProfile) userProfile.style.display = 'flex';
+
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    // Xử lý lỗi - có thể logout user nếu không lấy được dữ liệu
+                    localStorage.removeItem('user');
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (userProfile) userProfile.style.display = 'none';
+                }
+            } else {
+                // Chưa đăng nhập
+                if (authButtons) authButtons.style.display = 'flex';
+                if (userProfile) userProfile.style.display = 'none';
+            }
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        }
+
+        // Đóng dropdown khi click ra ngoài
+        window.onclick = function (event) {
+            if (!event.target.closest('.user-profile')) {
+                const dropdowns = document.getElementsByClassName('dropdown-menu');
+                Array.from(dropdowns).forEach(dropdown => {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Gọi hàm kiểm tra khi trang web load
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+
+</html>

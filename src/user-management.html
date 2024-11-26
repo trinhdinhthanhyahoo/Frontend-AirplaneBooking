@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý người dùng - AirBook</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/user-management.css">
+    <link rel="stylesheet" href="css/admin-header.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <!-- Sidebar - Same as admin-dashboard.html but with "Quản lý người dùng" active -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/logo.png" alt="AirBook Logo">
+                <span>AIRBOOK ADMIN</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="admin-dashboard.html"><i class="fas fa-tachometer-alt"></i> Tổng quan</a>
+                    </li>
+                    <li>
+                        <a href="#flights"><i class="fas fa-plane"></i> Quản lý chuyến bay</a>
+                    </li>
+                    <li>
+                        <a href="#bookings"><i class="fas fa-ticket-alt"></i> Đặt vé</a>
+                    </li>
+                    <li class="active">
+                        <a href="user-management.html"><i class="fas fa-users"></i> Quản lý người dùng</a>
+                    </li>
+                    <li>
+                        <a href="#reports"><i class="fas fa-chart-bar"></i> Báo cáo</a>
+                    </li>
+                    <li>
+                        <a href="#settings"><i class="fas fa-cog"></i> Cài đặt</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header cho cả admin-dashboard.html và user-management.html -->
+            <header class="admin-header">
+                <div class="admin-profile">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="admin-info">
+                        <img src="images/default-avatar.png" alt="Admin Avatar">
+                        <div class="admin-details">
+                            <span class="admin-name">Loading...</span>
+                            <span class="admin-role">Loading...</span>
+                        </div>
+                        <div class="dropdown">
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="dropdown-menu">
+                                <a href="profile.html"><i class="fas fa-user"></i> Hồ sơ</a>
+                                <a href="settings.html"><i class="fas fa-cog"></i> Cài đặt</a>
+                                <div class="divider"></div>
+                                <a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- User Management Content -->
+            <div class="dashboard-content">
+                <!-- User Management Header -->
+                <div class="content-header">
+                    <h1>Quản lý người dùng</h1>
+                    <button class="btn-primary" onclick="openAddUserModal()">
+                        <i class="fas fa-plus"></i> Thêm người dùng mới
+                    </button>
+                </div>
+
+                <!-- User Filters -->
+                <div class="filter-section">
+                    <select class="filter-dropdown" name="roleFilter">
+                        <option value="">Tất cả vai trò</option>
+                        <option value="ADMIN">Quản trị viên</option>
+                        <option value="USER">Người dùng</option>
+                        <option value="STAFF">Nhân viên</option>
+                    </select>
+                    <select class="filter-dropdown" name="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="ACTIVE">Đang hoạt động</option>
+                        <option value="INACTIVE">Không hoạt động</option>
+                        <option value="BLOCKED">Đã khóa</option>
+                    </select>
+                    <button class="btn-secondary" onclick="resetFilters()">
+                        <i class="fas fa-sync-alt"></i> Đặt lại
+                    </button>
+                </div>
+
+                <!-- Users Table -->
+                <div class="users-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="50">STT</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th width="120">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dữ liệu sẽ được thêm bởi JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                    <button class="btn-page active">1</button>
+                    <button class="btn-page">2</button>
+                    <button class="btn-page">3</button>
+                    <span>...</span>
+                    <button class="btn-page">10</button>
+                    <button class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Thêm/Sửa User -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Chỉnh sửa người dùng</h2>
+                <button class="close-modal" onclick="closeUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="userForm" onsubmit="handleUserSubmit(event)">
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="username">Tên người dùng <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <span id="passwordLabel">Mật khẩu</span>
+                            <span class="required" id="passwordRequired">*</span>
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password"
+                                placeholder="Để trống nếu không thay đổi mật khẩu">
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="form-text text-muted" id="passwordHelpText">
+                            Khi chỉnh sửa: Để trống nếu không muốn thay đổi mật khẩu
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Vai trò <span class="required">*</span></label>
+                        <select id="role" name="role" required>
+                            <option value="USER">Người dùng</option>
+                            <option value="ADMIN">Quản trị viên</option>
+                            <option value="STAFF">Nhân viên</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Trạng thái <span class="required">*</span></label>
+                        <select id="status" name="status" required>
+                            <option value="ACTIVE">Đang hoạt động</option>
+                            <option value="INACTIVE">Không hoạt động</option>
+                            <option value="BLOCKED">Đã khóa</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeUserModal()">Hủy</button>
+                    <button type="submit" class="btn-primary">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Xác nhận xóa -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Xác nhận xóa</h2>
+                <button class="close-modal" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
+                <div class="form-actions">
+                    <button class="btn-secondary" onclick="closeDeleteModal()">Hủy</button>
+                    <button class="btn-danger" onclick="confirmDelete()">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script src="js/user-management.js"></script>
+</body>
+
+</html>
